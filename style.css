@@ -1,0 +1,46 @@
+body {
+    height: 100vh;
+    width: auto;
+
+    margin: 0;
+}
+
+header.header {
+    background-color: lightsalmon;
+    height: 15%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+    h1.title {
+        margin: 0;
+    }
+
+    button.newAlbum {
+        
+    }
+
+.albumsContainer {
+    height: 85%;
+    background-color: lightcoral;
+    overflow: auto;
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 5%;
+}
+
+
+    .album {
+        height: 200px;
+        width: 200px;
+        background-color: green;
+    }
+
