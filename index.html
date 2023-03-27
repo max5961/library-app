@@ -8,43 +8,45 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <header class="header">
-        <h1 class="title">Albums To Listen To</h1>
-        <button class="newAlbum">Add</button>
-    </header>
-
-    <form action="" class="albumForm">
-        <div class="inputContainer">
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title">
+    <nav>
+        <h1>Album Collection</h1>
+        <div class="navBtnsContainer">
+            <button class="newAlbum">New Album</button>
+            <button class="favorites">Favorites</button>
+            <button class="entireCollection">Entire Collection</button>
         </div>
-        
-        <div class="inputContainer">
-            <label for="band">Band</label>
-            <input type="text" name="band" id="band">
-        </div>
+    </nav>
+    <div class="content">
+        <form class="addNewContent">
+            <input type="text" class="inputTitle" placeholder="Album name">
+            <input type="text" class="inputBand" placeholder="band name">
+            <input type="number" class="inputYear" placeholder="Year">
+            <input type="text" class="inputYoutube" placeholder="Youtube link">
+            <div class="favoritesContainer">
+                <label for="favorites">Add to favorites:</label>
+                <input type="checkbox" name="favorites" id="favorites">
+            </div>
+            <button type="submit" class="submitBtn">Submit</button>
+            <div class="exitNewContainer">
+                <button class="exitNew">X</button>
+            </div>
+        </form>
 
-        <div class="inputContainer">
-            <label for="year">Year</label>
-            <input type="text" name="year" id="year">
+        <div class="collection">
+            <div class="album">
+                <iframe width="300" height="200" src="https://www.youtube.com/embed/WMOjWR5mi7o"></iframe>
+                <div class="albumDesc">
+                    <div class="albumTitle">The Secret of the Secret and the secret</div>
+                    <div class="bandName">Aphotic</div>
+                    <div class="albumYear">2004</div>
+                    <button class="addFavorite">Favorite</button>
+                    <button class="remove">Remove</button>
+                </div>
+            </div>
         </div>
-
-        <div class="inputContainer">
-            <label for="runtime">Runtime</label>
-            <input type="text" name="runtime" id="runtime">
-        </div>
-        
-        <div class="inputContainer">
-            <label for="youtube">Youtube Link</label>
-            <input type="url" name="youtube" id="youtube">
-        </div>
-
-        <button type="submit" class='submit'>Submit</button>
-    </form>
-
-    <div class="albumsContainer">
-        
+     
     </div>
+
     <script src="./app.js"></script>
 </body>
 </html>

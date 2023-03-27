@@ -1,51 +1,94 @@
 const newAlbum = document.querySelector('.newAlbum');
-const albumsContainer = document.querySelector('.albumsContainer');
-const albumForm = document.querySelector('.albumForm');
+const addNewContent = document.querySelector('.addNewContent');
+const exitNew = document.querySelector('.exitNew');
+const collection = document.querySelector('.collection');
+const submitBtn = document.querySelector('.submitBtn');
 
+let albumCollection = [];
 
-const submit = document.querySelector('.submit');
-const title = document.getElementById('title');
-const band = document.getElementById('band');
-const year = document.getElementById('year');
-const runtime = document.getElementById('runtime');
-const youtube = document.getElementById('youtube');
-
-
-let collection = [];
-
-function Album(title, band, year, runtime, youtubeLink){
+function Album(title, band, year, youtubeLink, favorite){
     this.title = title;
     this.band = band;
     this.year = year;
-    this.runtime = runtime;
     this.youtubeLink = youtubeLink;
+    this.favorite = favorite;
 }
 
-function addToCollection(album){
-    collection.push(album);
+function toggleVisibility(e){
+    if(e.target === newAlbum){
+        addNewContent.style.visibility = 'visible';
+        collection.style.visibility = 'hidden';
+    }
+
+    else if(e.target === exitNew || e.target === submitBtn){
+        e.preventDefault();
+        addNewContent.style.visibility = 'hidden';
+        collection.style.visibility = 'visible';
+    }
 }
 
-newAlbum.addEventListener('click', () => {
-    albumForm.style.visibility = 'visible';
-})
+function addAlbum(){
+    let album = new Album(
+        document.querySelector('.inputTitle').value,
+        document.querySelector('.inputBand').value,
+        document.querySelector('.inputYear').value,
+        document.querySelector('.inputYoutube').value,
+        document.querySelector('#favorites').value
+    );
 
-function albumDisplay(album){
-    let albumGui = document.createElement('div');
-    albumGui.classList.add('album');
-    albumsContainer.appendChild(albumGui);
+    if(album.youtubeLink.length < 11 || !album.youtubeLink.includes('youtube.com')){
+        album.youtubeLink = '';
+    }
+    // convert youtube link into embedded link
+    else if (album.youtubeLink.includes('youtube.com')) {
+        album.youtubeLink = "https://www.youtube.com/embed/" + album.youtubeLink.substring(album.youtubeLink.length - 11);
+    }
 
-    albumGui.textContent = 'test';
+    albumCollection.push(album);
 }
 
-submit.addEventListener('click', (e) => {
-    e.preventDefault();
-    albumForm.style.visibility = 'hidden';
-    let album = new Album(title.value, band.value, year.value, runtime.value, youtube.value)
+function createDisplay(){
+    const album = document.createElement('div');
+    album.classList.add('album');
 
-    addToCollection(album);
-    console.log(collection);
+    const iframe = document.createElement('iframe');
+    iframe.width = '300';
+    iframe.height = '200';
 
-    albumDisplay(album);
-    
-})
+    const albumDesc = document.createElement('div');
+    albumDesc.classList.add('albumDesc');
 
+    const albumTitle = document.createElement('div');
+    const bandName = document.createElement('div');
+    const albumYear = document.createElement('div');
+    const addFavorite = document.createElement('button');
+    const remove = document.createElement('button');
+    albumTitle.classList.add('albumTitle');
+    bandName.classList.add('bandName');
+    albumYear.classList.add('albumYear');
+    addFavorite.classList.add('addFavorite');
+    remove.classList.add('remove');
+
+    collection.appendChild(album);
+    album.appendChild(iframe);
+    album.appendChild(albumDesc);
+    [albumTitle, bandName, albumYear, addFavorite, remove].forEach(item => albumDesc.appendChild(item));
+
+    albumTitle.textContent = albumCollection[albumCollection.length - 1].title;
+    bandName.textContent = albumCollection[albumCollection.length - 1].band;
+    albumYear.textContent = albumCollection[albumCollection.length - 1].year;
+    iframe.src = albumCollection[albumCollection.length - 1].youtubeLink;
+    addFavorite.textContent = 'Favorite';
+    remove.textContent = 'Remove';
+
+}
+
+function displayAlbum(e){
+    toggleVisibility(e);
+    addAlbum();
+    createDisplay();
+}
+
+newAlbum.addEventListener('click', toggleVisibility);
+exitNew.addEventListener('click', toggleVisibility);
+submitBtn.addEventListener('click', displayAlbum)
