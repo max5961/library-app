@@ -1,60 +1,208 @@
+:root {
+    --headerBG: rgb(139, 150, 125);
+    --bodyBG: rgb(161, 172, 133);
+    --albumBG: yellow;
+    --inputBG: rgb(209, 255, 149);
+    --btnBG: rgb(165, 199, 165);
+    --btnHoverBG: transparent;
+    --btnActiveBG: rgb(118, 143, 114);
+}
+
 body {
     height: 100vh;
     width: auto;
-
+    background-color: var(--bodyBG);
     margin: 0;
+    position: relative;
 }
 
-header.header {
-    background-color: lightsalmon;
-    height: 15%;
+body > * {
+    box-sizing: border-box;
+}
 
+button {
+    box-sizing: border-box;
+    height: 25px;
+    border: 2px solid var(--btnBG);
+    border-radius: .5rem;
+    background-color: var(--btnBG);
+}
+
+button:hover {
+    background-color: var(--btnHoverBG);
+    border: 2px dashed rgb(113, 255, 113);
+}
+
+button:active {
+    background-color: var(--btnActiveBG);
+    border: 2px dashed rgb(113, 255, 113);
+}
+
+nav {
+    height: 15%;
+    background-color: var(--headerBG);
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-around;
+    box-shadow: 0px 2px 5px 1px black;
 }
 
-    h1.title {
+    nav h1{
         margin: 0;
     }
 
-    button.newAlbum {
-        
+    nav .navBtnsContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
     }
 
-.albumsContainer {
-    height: 85%;
-    background-color: lightcoral;
-    overflow: auto;
-    
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-
-    padding: 5%;
+.content {
+   position: relative;
+   height: 100%;
+   width: 100%;
 }
 
+    /* add new content -------------------------- add new content*/
+    .addNewContent {
+        height: auto;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 4px black;
+        width: 80%;
+        background-color: var(--inputBG);
+        position: absolute;
+        right: 0;
+        left: 0;
+        margin-right: auto;
+        margin-left: auto;
+        top: 5%;
 
-    .album {
-        height: 200px;
-        width: 200px;
-        background-color: green;
+        z-index: 1;
+        visibility: hidden;
+
+        opacity: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
     }
 
+    .addNewContent input {
+        width: 80%;
+        height: 30px;
+        border-radius: .5rem;
+        padding: 0 10px 0 10px;
+    }
 
-.albumForm {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: 85%;
-    background-color: green;
+    .addNewContent .favoritesContainer {
+        width: 80%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
 
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    
-    visibility: hidden;
-}
+        .favoritesContainer input[type=checkbox] {
+            width: 40px
+        }
+
+        .addNewContent button[type=submit] {
+            width: 50%;
+            height: 25px;
+        }
+
+        .addNewContent .exitNewContainer {
+            width: 80%;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+            .exitNewContainer .exitNew {
+                height: 30px;
+                width: 30px;
+                background-color: red;
+                border-radius: 50%;
+                border: 1px solid black;
+                /* 'x' is not centered in button */
+            }
+
+            .exitNew:hover {
+                background-color: rgb(245, 127, 127);
+            }
+
+    /* collection ---------------------- collection */
+    .collection {
+        visibility: visible;
+        height: 100%;
+        width: 90%;
+
+        display: grid;
+        justify-content: start;
+        grid-template-columns: repeat(auto-fit, 300px);
+        grid-auto-rows: auto;
+        padding: 3%;
+        gap: 50px;
+
+    }
+
+        .collection .album {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .album iframe {
+            box-sizing: border-box;
+            border: 2px solid rgb(0, 0, 0);
+            border-radius: .5rem;
+        }
+
+        .album .albumDesc {
+            width: 100%;
+            padding: 2%;
+            overflow: auto;
+
+            display: grid;
+            gap: 5px;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            grid-template-areas:
+                "album album album"
+                "band band band"
+                "favorite year remove";
+        }
+
+        .albumDesc .albumTitle{
+            grid-area: album;
+            font-weight: 900;
+            display: flex;
+            justify-content: center;
+        }
+
+        .albumDesc .bandName {
+            grid-area: band;
+            display: flex;
+            justify-content: center;
+        }
+
+        .albumDesc .albumYear {
+            grid-area: year;
+            display: flex;
+            justify-content: center;
+        }
+
+        .albumDesc .addFavorite {
+            grid-area: favorite;
+            display: flex;
+        }
+
+        .albumDesc .remove {
+            grid-area: remove;
+        }
+
