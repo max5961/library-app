@@ -6,6 +6,7 @@ const submitBtn = document.querySelector('.submitBtn');
 
 let albumCollection = [];
 let favoritedAlbum = [];
+let removeBtnEventListener = true;
 
 function Album(title, band, year, youtubeLink, favorite){
     this.title = title;
@@ -34,7 +35,7 @@ function newAlbumForm(e){
     document.querySelector('.inputBand').value = '';
     document.querySelector('.inputYear').value = '';
     document.querySelector('.inputYoutube').value = '';
-    document.querySelector('.toggleFavorite').value = '';
+    //document.querySelector('.toggleFavorite').value = '';
 }
 
 function addAlbum(){
@@ -43,7 +44,7 @@ function addAlbum(){
         document.querySelector('.inputBand').value,
         document.querySelector('.inputYear').value,
         document.querySelector('.inputYoutube').value,
-        document.querySelector('.toggleFavorite').value
+        //document.querySelector('.toggleFavorite').value
     );
 
     if(album.youtubeLink.length < 11 || !album.youtubeLink.includes('youtube.com')){
@@ -57,10 +58,9 @@ function addAlbum(){
     albumCollection.push(album);
 }
 
-function createDisplay(index){
+function createDisplay(){
     const album = document.createElement('div');
     album.classList.add('album');
-    album.dataset.index = `${index}`;
 
     const iframe = document.createElement('iframe');
     iframe.width = '300';
@@ -79,7 +79,6 @@ function createDisplay(index){
     albumYear.classList.add('albumYear');
     addFavorite.classList.add('toggleFavorite');
     remove.classList.add('remove');
-    remove.dataset.index = `${index}`;
 
     collection.appendChild(album);
     album.appendChild(iframe);
@@ -95,15 +94,48 @@ function createDisplay(index){
 
 }
 
-function removeEntry(){
-    removeButtons = document.querySelectorAll('.remove');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            console.log(button); // so I know I have the right button
-            const parent = button.parentElement.parentElement;
-            parent.remove();
+function resetDataIndexes(){
+    const albums = document.querySelectorAll('.album');
 
-        })
+    for(let i = 0; i <= albums.length -1; i++){
+        albums[i].dataset.index = `${i}`;
+    }
+}
+
+const handleClick = (e) => {
+    let index = e.target.parentElement.parentElement.dataset.index;
+    console.log(`index of removed: ${index}`);
+    albumCollection.splice(index,1);
+    
+    //remove album from gui
+    const parent = e.target.parentElement.parentElement;
+    parent.remove();
+
+    //reset indexes of all displayed albums
+    resetDataIndexes();
+
+    removeBtnEventListener = true;
+}
+
+function removeEntry(){
+    const removeButtons = document.querySelectorAll('.remove');
+
+    removeButtons.forEach(button => {
+        button.addEventListener('click', handleClick);
+    })
+}
+
+function removeEventListeners(){
+    const removeBtns = document.querySelectorAll('.remove');
+    removeBtns.forEach(btn => {
+        if(removeBtnEventListener){
+            document.querySelectorAll('.remove').forEach(button => {
+                button.removeEventListener('click', handleClick);
+            })
+
+            removeBtnEventListener = false;
+            console.log(removeBtnEventListener);
+        }
     })
 }
 
@@ -114,10 +146,14 @@ function submitAlbum(e){
     // push the object created from the form values into the albumCollection array
     addAlbum();
     
-    // albumCollection length - 1 will be the index of the object that is pushed into albumCollection in addAlbum()
-    // index will be the data property in the .album .remove elements.
-    const index = albumCollection.length - 1;
-    createDisplay(index);
+    // populate gui with data from the latest album added to the albumCollection array
+    createDisplay();
+
+    // reset the dataset indexes of all of the populated albums in the gui
+    resetDataIndexes();
+
+    // remove event listeners to prevent duplicate event listeners every time an album is submitted
+    removeEventListeners();
 
     // get all of the remove buttons and addEventListeners
     removeEntry();
