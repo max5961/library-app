@@ -6,6 +6,7 @@
     --btnBG: rgb(165, 199, 165);
     --btnHoverBG: transparent;
     --btnActiveBG: rgb(118, 143, 114);
+    --favoritedBG: rgb(224, 255, 113);
 }
 
 body {

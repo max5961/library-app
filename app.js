@@ -5,6 +5,7 @@ const collection = document.querySelector('.collection');
 const submitBtn = document.querySelector('.submitBtn');
 
 let albumCollection = [];
+let favoritedAlbum = [];
 
 function Album(title, band, year, youtubeLink, favorite){
     this.title = title;
@@ -27,13 +28,22 @@ function toggleVisibility(e){
     }
 }
 
+function newAlbumForm(e){
+    toggleVisibility(e);
+    document.querySelector('.inputTitle').value = '';
+    document.querySelector('.inputBand').value = '';
+    document.querySelector('.inputYear').value = '';
+    document.querySelector('.inputYoutube').value = '';
+    document.querySelector('.toggleFavorite').value = '';
+}
+
 function addAlbum(){
     let album = new Album(
         document.querySelector('.inputTitle').value,
         document.querySelector('.inputBand').value,
         document.querySelector('.inputYear').value,
         document.querySelector('.inputYoutube').value,
-        document.querySelector('#favorites').value
+        document.querySelector('.toggleFavorite').value
     );
 
     if(album.youtubeLink.length < 11 || !album.youtubeLink.includes('youtube.com')){
@@ -47,9 +57,10 @@ function addAlbum(){
     albumCollection.push(album);
 }
 
-function createDisplay(){
+function createDisplay(index){
     const album = document.createElement('div');
     album.classList.add('album');
+    album.dataset.index = `${index}`;
 
     const iframe = document.createElement('iframe');
     iframe.width = '300';
@@ -66,8 +77,9 @@ function createDisplay(){
     albumTitle.classList.add('albumTitle');
     bandName.classList.add('bandName');
     albumYear.classList.add('albumYear');
-    addFavorite.classList.add('addFavorite');
+    addFavorite.classList.add('toggleFavorite');
     remove.classList.add('remove');
+    remove.dataset.index(`${index}`);
 
     collection.appendChild(album);
     album.appendChild(iframe);
@@ -83,12 +95,47 @@ function createDisplay(){
 
 }
 
+function remove(){
+    removeButtons = document.querySelectorAll('.remove');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            console.log(button);
+        })
+    })
+}
+
 function displayAlbum(e){
     toggleVisibility(e);
     addAlbum();
-    createDisplay();
+    
+    // albumCollection length will be the index of the object that is pushed into albumCollection in createDisplay()
+    // index will be the data property in the .album .remove elements.
+    const index = albumCollection.length;
+    createDisplay(index);
+
+    // get all of the remove buttons and addEventListeners
+    remove();
 }
 
-newAlbum.addEventListener('click', toggleVisibility);
+newAlbum.addEventListener('click', newAlbumForm);
 exitNew.addEventListener('click', toggleVisibility);
-submitBtn.addEventListener('click', displayAlbum)
+submitBtn.addEventListener('click', displayAlbum);
+
+
+let favoriteButtons = document.querySelectorAll('.toggleFavorite');
+let favorited = false;
+favoriteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        favorited = !favorited;
+        if(favorited){
+            button.style.backgroundColor = 'var(--favoritedBG)';
+            button.textContent = 'Unfavorite';
+        } else {
+            button.style.backgroundColor = 'var(--btnBG)';
+            button.textContent = 'Favorite';
+        }
+    })
+})
+
+
+
