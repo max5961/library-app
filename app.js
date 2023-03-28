@@ -79,7 +79,7 @@ function createDisplay(index){
     albumYear.classList.add('albumYear');
     addFavorite.classList.add('toggleFavorite');
     remove.classList.add('remove');
-    remove.dataset.index(`${index}`);
+    remove.dataset.index = `${index}`;
 
     collection.appendChild(album);
     album.appendChild(iframe);
@@ -95,31 +95,37 @@ function createDisplay(index){
 
 }
 
-function remove(){
+function removeEntry(){
     removeButtons = document.querySelectorAll('.remove');
     removeButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            console.log(button);
+            console.log(button); // so I know I have the right button
+            const parent = button.parentElement.parentElement;
+            parent.remove();
+
         })
     })
 }
 
-function displayAlbum(e){
+function submitAlbum(e){
+    // toggle visibility back to collection being displayed and form being hidden
     toggleVisibility(e);
+
+    // push the object created from the form values into the albumCollection array
     addAlbum();
     
-    // albumCollection length will be the index of the object that is pushed into albumCollection in createDisplay()
+    // albumCollection length - 1 will be the index of the object that is pushed into albumCollection in addAlbum()
     // index will be the data property in the .album .remove elements.
-    const index = albumCollection.length;
+    const index = albumCollection.length - 1;
     createDisplay(index);
 
     // get all of the remove buttons and addEventListeners
-    remove();
+    removeEntry();
 }
 
 newAlbum.addEventListener('click', newAlbumForm);
 exitNew.addEventListener('click', toggleVisibility);
-submitBtn.addEventListener('click', displayAlbum);
+submitBtn.addEventListener('click', submitAlbum);
 
 
 let favoriteButtons = document.querySelectorAll('.toggleFavorite');
