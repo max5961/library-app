@@ -6,14 +6,27 @@ const submitBtn = document.querySelector('.submitBtn');
 
 let albumCollection = [];
 let favoritedAlbums = [];
+let idNumbers = [];
 let removeBtnEventListener = true;
 
-function Album(title, band, year, youtubeLink, favorite){
+let favoriteView = false;
+
+
+function generateID(){
+    id = Math.floor(Math.random() * 90000) + 10000;
+    while(idNumbers.includes(id)){
+        id = Math.floor(Math.random() * 90000) + 10000;
+    }
+    return id;
+}
+
+function Album(title, band, year, youtubeLink, favorite, id){
     this.title = title;
     this.band = band;
     this.year = year;
     this.youtubeLink = youtubeLink;
     this.favorite = favorite;
+    this.id = generateID();
 }
 
 function toggleVisibility(e){
@@ -121,9 +134,16 @@ function resetDataIndexes(){
 }
 
 const removeEntry = (e) => {
-    let index = e.target.parentElement.parentElement.dataset.index;
-    console.log(`index of removed: ${index}`);
-    albumCollection.splice(index,1);
+    if(favoriteView){
+        let index = e.target.parentElement.parentElement.dataset.index;
+        console.log(`index of removed: ${index}`);
+        favoritedAlbums.splice(index,1);
+    } else {
+        let index = e.target.parentElement.parentElement.dataset.index;
+        console.log(`index of removed: ${index}`);
+        albumCollection.splice(index,1);
+    }
+    
     
     //remove album from gui
     const parent = e.target.parentElement.parentElement;
@@ -133,28 +153,6 @@ const removeEntry = (e) => {
     resetDataIndexes();
 
     removeBtnEventListener = true;
-}
-
-/*
-function removeEntry(){
-    const removeButtons = document.querySelectorAll('.remove');
-
-    removeButtons.forEach(button => {
-        button.addEventListener('click', handleClick);
-    })
-} */
-
-function removeEventListeners(){
-    const removeBtns = document.querySelectorAll('.remove');
-    removeBtns.forEach(btn => {
-        if(removeBtnEventListener){
-            document.querySelectorAll('.remove').forEach(button => {
-                button.removeEventListener('click', handleClick);
-            })
-
-            removeBtnEventListener = false;
-        }
-    })
 }
 
 function submitAlbum(e){
@@ -169,11 +167,6 @@ function submitAlbum(e){
 
     // reset the dataset indexes of all of the populated albums in the gui
     resetDataIndexes();
-
-    // remove event listeners to prevent duplicate event listeners every time an album is submitted
-    //removeEventListeners();
-
-    // get all of the remove buttons and addEventListeners
 }
 
 newAlbum.addEventListener('click', newAlbumForm);
@@ -204,6 +197,8 @@ function toggleFavorite(e){
 }
 
 function viewFavorites(){
+    favoriteView = true;
+
     favoritedAlbums = albumCollection.filter(album => album.favorite == 'true');
 
     const collection = document.querySelector('.collection');
@@ -248,6 +243,10 @@ function viewFavorites(){
 
             addFavorite.textContent = 'Unfavorite';
             addFavorite.style.backgroundColor = 'var(--favoritedBG)';
+
+            resetDataIndexes();
+            remove.addEventListener('click', removeEntry);
+            addFavorite.addEventListener('click', removeEntry);
                 
         });
     }
