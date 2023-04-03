@@ -106,6 +106,7 @@ function createDisplay(albumCollection){
         addFavorite.textContent = 'Favorite';
     }
     remove.textContent = 'Remove';
+    remove.addEventListener('click', removeEntry);
 
     updateFavorite(addFavorite);
 
@@ -119,7 +120,7 @@ function resetDataIndexes(){
     }
 }
 
-const handleClick = (e) => {
+const removeEntry = (e) => {
     let index = e.target.parentElement.parentElement.dataset.index;
     console.log(`index of removed: ${index}`);
     albumCollection.splice(index,1);
@@ -134,13 +135,14 @@ const handleClick = (e) => {
     removeBtnEventListener = true;
 }
 
+/*
 function removeEntry(){
     const removeButtons = document.querySelectorAll('.remove');
 
     removeButtons.forEach(button => {
         button.addEventListener('click', handleClick);
     })
-}
+} */
 
 function removeEventListeners(){
     const removeBtns = document.querySelectorAll('.remove');
@@ -169,10 +171,9 @@ function submitAlbum(e){
     resetDataIndexes();
 
     // remove event listeners to prevent duplicate event listeners every time an album is submitted
-    removeEventListeners();
+    //removeEventListeners();
 
     // get all of the remove buttons and addEventListeners
-    removeEntry();
 }
 
 newAlbum.addEventListener('click', newAlbumForm);
