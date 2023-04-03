@@ -111,6 +111,11 @@ function createDisplay(albumCollection){
     albumYear.textContent = albumCollection[albumCollection.length - 1].year;
     iframe.src = albumCollection[albumCollection.length - 1].youtubeLink;
 
+    //set id to album html 
+    const idNumber = albumCollection[albumCollection.length -1].id;
+    album.dataset.id = `${idNumber}`;
+
+
     //check if favorited
     if(albumCollection[albumCollection.length - 1].favorite == 'true'){
         addFavorite.textContent = 'Unfavorite';
@@ -244,7 +249,6 @@ function viewFavorites(){
             addFavorite.textContent = 'Unfavorite';
             addFavorite.style.backgroundColor = 'var(--favoritedBG)';
 
-            resetDataIndexes();
             remove.addEventListener('click', removeEntry);
             addFavorite.addEventListener('click', removeEntry);
                 
