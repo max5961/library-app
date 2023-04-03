@@ -225,26 +225,28 @@ function viewFavorites(){
             const albumTitle = document.createElement('div');
             const bandName = document.createElement('div');
             const albumYear = document.createElement('div');
-            const remove = document.createElement('div');
-            const removeFavorite = document.createElement('button');
+            const remove = document.createElement('button');
+            const addFavorite = document.createElement('button');
             albumTitle.classList.add('albumTitle');
             bandName.classList.add('bandName');
             albumYear.classList.add('albumYear');
+            addFavorite.classList.add('toggleFavorite');
             remove.classList.add('remove');
-            removeFavorite.classList.add('removeFavorite');
 
             collection.appendChild(album);
             album.appendChild(iframe);
             album.appendChild(albumDesc);
-            [albumTitle, bandName, albumYear, remove, removeFavorite].forEach(item => albumDesc.appendChild(item));
+            [albumTitle, bandName, albumYear, addFavorite, remove].forEach(item => albumDesc.appendChild(item));
 
             albumTitle.textContent = favAlbum.title;
             bandName.textContent = favAlbum.band;
             albumYear.textContent = favAlbum.year;
             iframe.src = favAlbum.youtubeLink;
 
-            remove.textContent = 'Remove favorite';
-            remove.style.backgroundColor = 'var(--btnBG)';
+            remove.textContent = 'Remove';
+
+            addFavorite.textContent = 'Unfavorite';
+            addFavorite.style.backgroundColor = 'var(--favoritedBG)';
                 
         });
     }
