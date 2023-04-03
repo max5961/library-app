@@ -5,7 +5,7 @@ const collection = document.querySelector('.collection');
 const submitBtn = document.querySelector('.submitBtn');
 
 let albumCollection = [];
-let favoritedAlbum = [];
+let favoritedAlbums = [];
 let removeBtnEventListener = true;
 
 function Album(title, band, year, youtubeLink, favorite){
@@ -35,16 +35,24 @@ function newAlbumForm(e){
     document.querySelector('.inputBand').value = '';
     document.querySelector('.inputYear').value = '';
     document.querySelector('.inputYoutube').value = '';
-    //document.querySelector('.toggleFavorite').value = '';
+    document.querySelector('#addFavorite').checked = false;
 }
 
 function addAlbum(){
+    const fav = document.querySelector('#addFavorite');
+    if(fav.checked == true){
+        fav.value = true;
+    }
+    else if(fav.checked == false){
+        fav.value = false;
+    }
+
     let album = new Album(
         document.querySelector('.inputTitle').value,
         document.querySelector('.inputBand').value,
         document.querySelector('.inputYear').value,
         document.querySelector('.inputYoutube').value,
-        //document.querySelector('.toggleFavorite').value
+        fav.value
     );
 
     if(album.youtubeLink.length < 11 || !album.youtubeLink.includes('youtube.com')){
@@ -58,7 +66,7 @@ function addAlbum(){
     albumCollection.push(album);
 }
 
-function createDisplay(){
+function createDisplay(albumCollection){
     const album = document.createElement('div');
     album.classList.add('album');
 
@@ -89,8 +97,17 @@ function createDisplay(){
     bandName.textContent = albumCollection[albumCollection.length - 1].band;
     albumYear.textContent = albumCollection[albumCollection.length - 1].year;
     iframe.src = albumCollection[albumCollection.length - 1].youtubeLink;
-    addFavorite.textContent = 'Favorite';
+
+    //check if favorited
+    if(albumCollection[albumCollection.length - 1].favorite == 'true'){
+        addFavorite.textContent = 'Unfavorite';
+        addFavorite.style.backgroundColor = 'var(--favoritedBG)';
+    } else {
+        addFavorite.textContent = 'Favorite';
+    }
     remove.textContent = 'Remove';
+
+    updateFavorite(addFavorite);
 
 }
 
@@ -134,7 +151,6 @@ function removeEventListeners(){
             })
 
             removeBtnEventListener = false;
-            console.log(removeBtnEventListener);
         }
     })
 }
@@ -147,7 +163,7 @@ function submitAlbum(e){
     addAlbum();
     
     // populate gui with data from the latest album added to the albumCollection array
-    createDisplay();
+    createDisplay(albumCollection);
 
     // reset the dataset indexes of all of the populated albums in the gui
     resetDataIndexes();
@@ -164,20 +180,78 @@ exitNew.addEventListener('click', toggleVisibility);
 submitBtn.addEventListener('click', submitAlbum);
 
 
-let favoriteButtons = document.querySelectorAll('.toggleFavorite');
-let favorited = false;
-favoriteButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        favorited = !favorited;
-        if(favorited){
-            button.style.backgroundColor = 'var(--favoritedBG)';
-            button.textContent = 'Unfavorite';
-        } else {
-            button.style.backgroundColor = 'var(--btnBG)';
-            button.textContent = 'Favorite';
-        }
-    })
-})
+function updateFavorite(addFavorite){
+    addFavorite.addEventListener('click', toggleFavorite)
+}
+
+function toggleFavorite(e){
+    const index = e.target.parentElement.parentElement.dataset.index;
+
+    if(e.target.style.backgroundColor == 'var(--favoritedBG)'){
+        //change gui
+        e.target.style.backgroundColor = 'var(--btnBG)';
+        e.target.textContent = 'Favorite';
+
+        //update albumCollection arr
+        albumCollection[index].favorite = 'false';
+    } else {
+        e.target.style.backgroundColor = 'var(--favoritedBG)';
+        e.target.textContent = "Unfavorite";
+
+        albumCollection[index].favorite = 'true';
+    }
+}
+
+function viewFavorites(){
+    favoritedAlbums = albumCollection.filter(album => album.favorite == 'true');
+
+    const collection = document.querySelector('.collection');
+    while(collection.firstChild){
+        collection.removeChild(collection.firstChild);
+    }
+
+    if(favoritedAlbums.length > 0){
+        favoritedAlbums.forEach(favAlbum => {
+            const album = document.createElement('div');
+            album.classList.add('album');
+
+            const iframe = document.createElement('iframe');
+            iframe.width = '300';
+            iframe.height = '200';
+
+            const albumDesc = document.createElement('div');
+            albumDesc.classList.add('albumDesc');
+
+            const albumTitle = document.createElement('div');
+            const bandName = document.createElement('div');
+            const albumYear = document.createElement('div');
+            const remove = document.createElement('div');
+            const removeFavorite = document.createElement('button');
+            albumTitle.classList.add('albumTitle');
+            bandName.classList.add('bandName');
+            albumYear.classList.add('albumYear');
+            remove.classList.add('remove');
+            removeFavorite.classList.add('removeFavorite');
+
+            collection.appendChild(album);
+            album.appendChild(iframe);
+            album.appendChild(albumDesc);
+            [albumTitle, bandName, albumYear, remove, removeFavorite].forEach(item => albumDesc.appendChild(item));
+
+            albumTitle.textContent = favAlbum.title;
+            bandName.textContent = favAlbum.band;
+            albumYear.textContent = favAlbum.year;
+            iframe.src = favAlbum.youtubeLink;
+
+            remove.textContent = 'Remove favorite';
+            remove.style.backgroundColor = 'var(--btnBG)';
+                
+        });
+    }
+}
+
+document.querySelector('.favorites').addEventListener('click', viewFavorites);
+
 
 
 

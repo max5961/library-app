@@ -198,8 +198,13 @@ nav {
             justify-content: center;
         }
 
-        .albumDesc .addFavorite {
+        .albumDesc .addFavorite,
+        .albumDesc .removeFavorite{
             grid-area: favorite;
+        }
+
+        .albumDes .removeFavorite {
+            visibility: hidden;
         }
 
         .albumDesc .remove {
