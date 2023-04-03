@@ -148,6 +148,9 @@ const removeEntry = (e) => {
         console.log(`index of removed: ${index}`);
         albumCollection.splice(index,1);
     }
+
+    albumCollection = albumCollection.filter(album => album.id != e.target.parentElement.parentElement.dataset.id);
+    favoritedAlbums = favoritedAlbums.filter(album => album.id != e.target.parentElement.parentElement.dataset.id);
     
     
     //remove album from gui
@@ -213,8 +216,10 @@ function viewFavorites(){
 
     if(favoritedAlbums.length > 0){
         favoritedAlbums.forEach(favAlbum => {
+
             const album = document.createElement('div');
             album.classList.add('album');
+            album.dataset.id = `${favAlbum.id}`;
 
             const iframe = document.createElement('iframe');
             iframe.width = '300';
@@ -243,6 +248,7 @@ function viewFavorites(){
             bandName.textContent = favAlbum.band;
             albumYear.textContent = favAlbum.year;
             iframe.src = favAlbum.youtubeLink;
+            
 
             remove.textContent = 'Remove';
 
@@ -251,6 +257,8 @@ function viewFavorites(){
 
             remove.addEventListener('click', removeEntry);
             addFavorite.addEventListener('click', removeEntry);
+
+            resetDataIndexes();
                 
         });
     }
