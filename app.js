@@ -10,12 +10,13 @@ let albumCollection = [];
 let favoritedAlbums = [];
 let idNumbers = [];
 let favoriteView = false;
-let entireCollectionView = false;
+let entireCollectionView = true;
 //let removeBtnEventListener = true; ---I dont think I need this anymore
 
 
 function generateID(){
     id = Math.floor(Math.random() * 90000) + 10000;
+    idNumbers.push(id);
     while(idNumbers.includes(id)){
         id = Math.floor(Math.random() * 90000) + 10000;
     }
@@ -187,10 +188,6 @@ function submitAlbum(e){
     // resetDataIndexes(); ---- I dont think I need this
 }
 
-newAlbum.addEventListener('click', newAlbumForm);
-exitNew.addEventListener('click', toggleVisibility);
-submitBtn.addEventListener('click', submitAlbum);
-
 function toggleFavorite(e){
     const idNumber = e.target.parentElement.parentElement.dataset.id;
 
@@ -288,7 +285,9 @@ function viewFavorites(){
     }
 }
 
-
+newAlbum.addEventListener('click', newAlbumForm);
+exitNew.addEventListener('click', toggleVisibility);
+submitBtn.addEventListener('click', submitAlbum);
 favoriteBtn.addEventListener('click', function(){
     // Switch viewing modes.  Only set favoriteView to true if it has already been turned off and reset entireCollectionView to false
     if(favoriteView === false){
