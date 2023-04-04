@@ -3,11 +3,14 @@ const addNewContent = document.querySelector('.addNewContent');
 const exitNew = document.querySelector('.exitNew');
 const collection = document.querySelector('.collection');
 const submitBtn = document.querySelector('.submitBtn');
+const favoriteBtn = document.querySelector('.favorites');
+const entireCollectionBtn = document.querySelector('.entireCollection');
 
 let albumCollection = [];
 let favoritedAlbums = [];
 let idNumbers = [];
 let favoriteView = false;
+let entireCollectionView = false;
 //let removeBtnEventListener = true; ---I dont think I need this anymore
 
 
@@ -171,12 +174,14 @@ function submitAlbum(e){
     // toggle visibility back to collection being displayed and form being hidden
     toggleVisibility(e);
 
-    // push the object created from the from values into the albumCollection array
+    // push the object created from the from values into the albumCollection array and favoritedAlbums array (if favorite is checked)
     addAlbum();
     
     // populate gui with data from the latest album added to the albumCollection array
-    let album = albumCollection[albumCollection.length - 1];
-    newDisplayInstance(album);
+    if(favoriteView == false){
+        let album = albumCollection[albumCollection.length - 1];
+        newDisplayInstance(album);
+    }
 
     // reset the dataset indexes of all of the populated albums in the gui
     // resetDataIndexes(); ---- I dont think I need this
@@ -284,11 +289,30 @@ function viewFavorites(){
 }
 
 
-document.querySelector('.favorites').addEventListener('click', function(){
-    favoriteView = !favoriteView;
-    newDisplayFromArr(favoritedAlbums);
+favoriteBtn.addEventListener('click', function(){
+    // Switch viewing modes.  Only set favoriteView to true if it has already been turned off and reset entireCollectionView to false
+    if(favoriteView === false){
+        favoriteView = !favoriteView;
+        entireCollectionView = false;
+
+        favoriteBtn.style.backgroundColor = 'var(--btnViewingBG)';
+        entireCollectionBtn.style.backgroundColor = 'var(--btnBG)';
+
+        newDisplayFromArr(favoritedAlbums);
+    }
 });
 
+entireCollectionBtn.addEventListener('click', function(){
+    if(entireCollectionView === false){
+        entireCollectionView = !entireCollectionView;
+        favoriteView = false;
+
+        entireCollectionBtn.style.backgroundColor = 'var(--btnViewingBG)';
+        favoriteBtn.style.backgroundColor = 'var(--btnBG)';
+
+        newDisplayFromArr(albumCollection);
+    }
+})
 
 
 

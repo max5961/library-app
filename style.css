@@ -3,7 +3,8 @@
     --bodyBG: rgb(161, 172, 133);
     --albumBG: yellow;
     --inputBG: rgb(209, 255, 149);
-    --btnBG: rgb(165, 199, 165);
+    --btnBG: rgb(164, 194, 164);
+    --btnViewingBG: rgb(0, 255, 0);
     --btnHoverBG: transparent;
     --btnActiveBG: rgb(118, 143, 114);
     --favoritedBG: rgb(224, 255, 113);
@@ -60,6 +61,10 @@ nav {
         flex-wrap: wrap;
         justify-content: space-around;
     }
+
+        .navBtnsContainer .entireCollection{
+            background-color: var(--btnViewingBG);
+        }
 
 .content {
    position: relative;
