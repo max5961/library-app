@@ -124,6 +124,20 @@ function newDisplayInstance(obj){
     bandName.textContent = obj.band;
     albumYear.textContent = obj.year;
     iframe.src = obj.youtubeLink;
+
+    // set empty obj values to 'no value given'
+    if(albumTitle.textContent === ''){
+        albumTitle.appendChild(document.createElement('em'))
+        albumTitle.firstChild.textContent = 'title - ?'
+    }
+    if(bandName.textContent === ''){
+        bandName.appendChild(document.createElement('em'))
+        bandName.firstChild.textContent = 'band - ?'
+    }
+    if(albumYear.textContent === ''){
+        albumYear.appendChild(document.createElement('em'))
+        albumYear.firstChild.textContent = 'year - ?'
+    }
     
     //check if favorited
     if(obj.favorite == 'true'){
