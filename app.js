@@ -24,7 +24,7 @@ function generateID(){
 }
 
 function generateColor(){
-    return `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+    return `rgb(${Math.floor(Math.random() * 200 + 55)}, ${Math.floor(Math.random() * 200) + 55}, ${Math.floor(Math.random() * 200) + 55})`
 }
 
 function Album(title, band, year, youtubeLink, favorite, id){
