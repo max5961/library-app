@@ -272,66 +272,6 @@ function toggleFavorite(e){
     }
 }
 
-function viewFavorites(){
-    favoriteView = true;
-
-    favoritedAlbums = albumCollection.filter(album => album.favorite == 'true');
-
-    const collection = document.querySelector('.collection');
-    while(collection.firstChild){
-        collection.removeChild(collection.firstChild);
-    }
-
-    if(favoritedAlbums.length > 0){
-        favoritedAlbums.forEach(favAlbum => {
-
-            const album = document.createElement('div');
-            album.classList.add('album');
-            album.dataset.id = `${favAlbum.id}`;
-
-            const iframe = document.createElement('iframe');
-            iframe.width = '300';
-            iframe.height = '200';
-
-            const albumDesc = document.createElement('div');
-            albumDesc.classList.add('albumDesc');
-
-            const albumTitle = document.createElement('div');
-            const bandName = document.createElement('div');
-            const albumYear = document.createElement('div');
-            const remove = document.createElement('button');
-            const addFavorite = document.createElement('button');
-            albumTitle.classList.add('albumTitle');
-            bandName.classList.add('bandName');
-            albumYear.classList.add('albumYear');
-            addFavorite.classList.add('toggleFavorite');
-            remove.classList.add('remove');
-
-            collection.appendChild(album);
-            album.appendChild(iframe);
-            album.appendChild(albumDesc);
-            [albumTitle, bandName, albumYear, addFavorite, remove].forEach(item => albumDesc.appendChild(item));
-
-            albumTitle.textContent = favAlbum.title;
-            bandName.textContent = favAlbum.band;
-            albumYear.textContent = favAlbum.year;
-            iframe.src = favAlbum.youtubeLink;
-            
-
-            remove.textContent = 'Remove';
-
-            addFavorite.textContent = 'Unfavorite';
-            addFavorite.style.backgroundColor = 'var(--favoritedBG)';
-
-            remove.addEventListener('click', removeEntry);
-            addFavorite.addEventListener('click', removeEntry);
-
-            resetDataIndexes();
-                
-        });
-    }
-}
-
 newAlbum.addEventListener('click', newAlbumForm);
 exitNew.addEventListener('click', toggleVisibility);
 submitBtn.addEventListener('click', submitAlbum);
