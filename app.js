@@ -216,11 +216,6 @@ const removeEntry = (e) => {
     //remove album from gui
     const parent = e.target.parentElement.parentElement;
     parent.remove();
-
-    //reset indexes of all displayed albums 
-    //resetDataIndexes(); ---- I don't think I need this
-
-    // removeBtnEventListener = true; ---- I don't think I need this
 }
 
 function submitAlbum(e){
@@ -234,10 +229,10 @@ function submitAlbum(e){
     if(favoriteView == false){
         let album = albumCollection[albumCollection.length - 1];
         newDisplayInstance(album);
+    } else {
+        let favAlbum = favoritedAlbums[favoritedAlbums.length - 1];
+        newDisplayInstance(favAlbum);
     }
-
-    // reset the dataset indexes of all of the populated albums in the gui
-    // resetDataIndexes(); ---- I dont think I need this
 }
 
 function toggleFavorite(e){
