@@ -238,7 +238,7 @@ function submitAlbum(e){
 function toggleFavorite(e){
     const idNumber = e.target.parentElement.parentElement.dataset.id;
 
-    // if in favorites viewing mode, remove obj from gui
+    // If in favorites view, remove obj from gui.  If in entire collection view, do not remove object from gui because it is only being unfavorited, not removed.
     if(favoriteView){
         const parent = e.target.parentElement.parentElement;
         parent.remove();
