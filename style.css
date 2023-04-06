@@ -169,6 +169,54 @@ nav {
             border-radius: .5rem;
         }
 
+        .album .iconContainer {
+            height: 200px;
+            width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: .5rem;
+            overflow: hidden;
+            border: 2px solid rgb(48, 48, 48);
+        }
+
+        .album .iconContainer .overlay {
+            height: 200px;
+            width: 300px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 60%;
+        }
+
+        .album .iconContainer .outerCircle,
+        .album .iconContainer .middleCircle,
+        .album .iconContainer .innerCircle {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .album .iconContainer .outerCircle {
+            background-color: black;
+            height: 175px;
+            width: 175px;
+            flex-shrink: 0;
+        }
+        .album .iconContainer .middleCircle {
+            height: 55px;
+            width: 55px;
+            opacity: 80%;
+        }
+
+        .album .iconContainer .innerCircle {
+            background-color: black;
+            height: 10px;
+            width: 10px;
+        }
+
         .album .albumDesc {
             width: 100%;
             padding: 2%;

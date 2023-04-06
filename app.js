@@ -23,6 +23,10 @@ function generateID(){
     return id;
 }
 
+function generateColor(){
+    return `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+}
+
 function Album(title, band, year, youtubeLink, favorite, id){
     this.title = title;
     this.band = band;
@@ -30,6 +34,7 @@ function Album(title, band, year, youtubeLink, favorite, id){
     this.youtubeLink = youtubeLink;
     this.favorite = favorite;
     this.id = generateID();
+    this.color = generateColor();
 }
 
 function toggleVisibility(e){
@@ -94,10 +99,37 @@ function newDisplayInstance(obj){
     const idNumber = obj.id;
     album.dataset.id = `${idNumber}`;
 
-    // youtube embed container
-    const iframe = document.createElement('iframe');
-    iframe.width = '300';
-    iframe.height = '200';
+    let iframe;
+    let iconContainer;
+
+    if(obj.youtubeLink != ''){
+        // youtube embed container
+        iframe = document.createElement('iframe');
+        iframe.width = '300';
+        iframe.height = '200';
+    } else {
+        iconContainer = document.createElement('div');
+        iconContainer.classList.add('iconContainer');
+        iconContainer.style.backgroundColor = obj.color;
+
+        const outerCircle = document.createElement('div');
+        outerCircle.classList.add('outerCircle');
+        const middleCircle = document.createElement('div');
+        middleCircle.classList.add('middleCircle');
+        middleCircle.style.backgroundColor = obj.color;
+        const innerCircle = document.createElement('div');
+        innerCircle.classList.add('innerCircle');
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+        overlay.style.backgroundColor = obj.color;
+
+        iconContainer.appendChild(outerCircle);
+        outerCircle.appendChild(middleCircle);
+        middleCircle.appendChild(innerCircle);
+        innerCircle.appendChild(overlay);
+    }
+
+
 
     // album desc container + children
     const albumDesc = document.createElement('div');
@@ -115,7 +147,11 @@ function newDisplayInstance(obj){
 
     // add elements to containers 
     collection.appendChild(album);
-    album.appendChild(iframe);
+    if(obj.youtubeLink != ''){
+        album.appendChild(iframe);
+    } else {
+        album.appendChild(iconContainer);
+    }
     album.appendChild(albumDesc);
     [albumTitle, bandName, albumYear, addFavorite, remove].forEach(desc => albumDesc.appendChild(desc));
 
@@ -123,7 +159,9 @@ function newDisplayInstance(obj){
     albumTitle.textContent = obj.title;
     bandName.textContent = obj.band;
     albumYear.textContent = obj.year;
-    iframe.src = obj.youtubeLink;
+    if(obj.youtubeLink != ''){
+        iframe.src = obj.youtubeLink;
+    }
 
     // set empty obj values to 'no value given'
     if(albumTitle.textContent === ''){
