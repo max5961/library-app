@@ -276,7 +276,8 @@ newAlbum.addEventListener('click', newAlbumForm);
 exitNew.addEventListener('click', toggleVisibility);
 submitBtn.addEventListener('click', submitAlbum);
 favoriteBtn.addEventListener('click', function(){
-    // Switch viewing modes.  Only set favoriteView to true if it has already been turned off and reset entireCollectionView to false
+    // Switch viewing modes.  Only set toggle favoriteView to true if it is currently false.  favoriteView can only be turned false by clicking entireCollectionView and vice versa.
+    // This allows the user to click a viewing mode more than once without toggling it on/off.
     if(favoriteView === false){
         favoriteView = !favoriteView;
         entireCollectionView = false;
